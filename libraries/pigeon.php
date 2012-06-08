@@ -126,6 +126,16 @@ class Pigeon
 		self::delete($name . '/(:any)', $name . '/delete/$1');
 	}
 
+	public static function resource($name)
+	{
+		self::get($name, $name . '/show');
+		self::get($name . '/new', $name . '/new');
+		self::get($name . '/edit', $name . '/edit');
+		self::post($name, $name . '/create');
+		self::put($name, $name . '/update');
+		self::delete($name, $name . '/delete');
+	}
+
 	/* --------------------------------------------------------------
      * UTILITY FUNCTIONS
      * ------------------------------------------------------------ */

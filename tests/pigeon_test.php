@@ -182,6 +182,38 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		$this->assertEquals(array( 'books/(:any)' => 'books/delete/$1' ), Pigeon::draw());
 	}
 
+	public function test_resource()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'GET';
+
+		Pigeon::resource('profile');
+
+		$this->assertEquals(array( 'profile' => 'profile/show',
+								   'profile/new' => 'profile/new',
+								   'profile/edit' => 'profile/edit' ), Pigeon::draw());
+
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+
+		Pigeon::clear();
+		Pigeon::resource('profile');
+
+		$this->assertEquals(array( 'profile' => 'profile/create' ), Pigeon::draw());
+
+		$_SERVER['REQUEST_METHOD'] = 'PUT';
+
+		Pigeon::clear();
+		Pigeon::resource('profile');
+
+		$this->assertEquals(array( 'profile' => 'profile/update' ), Pigeon::draw());
+
+		$_SERVER['REQUEST_METHOD'] = 'DELETE';
+
+		Pigeon::clear();
+		Pigeon::resource('profile');
+
+		$this->assertEquals(array( 'profile' => 'profile/delete' ), Pigeon::draw());
+	}
+
 	/* --------------------------------------------------------------
      * UTILITY FUNCTIONS
      * ------------------------------------------------------------ */
