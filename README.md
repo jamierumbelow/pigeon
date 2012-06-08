@@ -43,3 +43,12 @@ Remember to include Composer's autoload file in `index.php`:
     require_once './vendor/autoload.php';
 
 Alternatively, download and drag the **Pigeon.php** file into your _application/libraries_ folder. Autoload the library and away you go.
+
+Unit Tests
+----------
+
+Install [PHPUnit](https://github.com/sebastianbergmann/phpunit). I'm running version 3.6.10.
+
+Then, simply run the `phpunit` command on the test file:
+
+    $ phpunit tests/Pigeon_test.php
