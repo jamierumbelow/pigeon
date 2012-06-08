@@ -58,6 +58,101 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 	}
 
 	/* --------------------------------------------------------------
+     * HTTP VERB ROUTES
+     * ------------------------------------------------------------ */
+
+	public function test_get()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'GET';
+
+		Pigeon::get('posts/(:any)', 'posts/show/$1');
+		Pigeon::get('posts/(:num)', 'posts#show');
+		Pigeon::get('posts/people', array( 'Posts', 'action' ));
+
+		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
+								   'posts/people' => 'posts/action',
+								   'posts/(:num)' => 'posts/show/$1' ), Pigeon::draw());
+	}
+
+	public function test_post()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+
+		Pigeon::post('posts/(:any)', 'posts/show/$1');
+		Pigeon::post('posts/(:num)', 'posts#show');
+		Pigeon::post('posts/people', array( 'Posts', 'action' ));
+
+		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
+								   'posts/people' => 'posts/action',
+								   'posts/(:num)' => 'posts/show/$1' ), Pigeon::draw());
+	}
+
+	public function test_put()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'PUT';
+
+		Pigeon::put('posts/(:any)', 'posts/show/$1');
+		Pigeon::put('posts/(:num)', 'posts#show');
+		Pigeon::put('posts/people', array( 'Posts', 'action' ));
+
+		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
+								   'posts/people' => 'posts/action',
+								   'posts/(:num)' => 'posts/show/$1' ), Pigeon::draw());
+	}
+
+	public function test_delete()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'DELETE';
+
+		Pigeon::delete('posts/(:any)', 'posts/show/$1');
+		Pigeon::delete('posts/(:num)', 'posts#show');
+		Pigeon::delete('posts/people', array( 'Posts', 'action' ));
+
+		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
+								   'posts/people' => 'posts/action',
+								   'posts/(:num)' => 'posts/show/$1' ), Pigeon::draw());
+	}
+
+	public function test_patch()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'PATCH';
+
+		Pigeon::patch('posts/(:any)', 'posts/show/$1');
+		Pigeon::patch('posts/(:num)', 'posts#show');
+		Pigeon::patch('posts/people', array( 'Posts', 'action' ));
+
+		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
+								   'posts/people' => 'posts/action',
+								   'posts/(:num)' => 'posts/show/$1' ), Pigeon::draw());
+	}
+
+	public function test_head()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'HEAD';
+
+		Pigeon::head('posts/(:any)', 'posts/show/$1');
+		Pigeon::head('posts/(:num)', 'posts#show');
+		Pigeon::head('posts/people', array( 'Posts', 'action' ));
+
+		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
+								   'posts/people' => 'posts/action',
+								   'posts/(:num)' => 'posts/show/$1' ), Pigeon::draw());
+	}
+
+	public function test_options()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'OPTIONS';
+
+		Pigeon::options('posts/(:any)', 'posts/show/$1');
+		Pigeon::options('posts/(:num)', 'posts#show');
+		Pigeon::options('posts/people', array( 'Posts', 'action' ));
+
+		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
+								   'posts/people' => 'posts/action',
+								   'posts/(:num)' => 'posts/show/$1' ), Pigeon::draw());
+	}
+
+	/* --------------------------------------------------------------
      * UTILITY FUNCTIONS
      * ------------------------------------------------------------ */
 

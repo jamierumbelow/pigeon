@@ -5,12 +5,12 @@ CodeIgniter's routing engine is _far too basic_. Pigeon wraps around the core ro
 
 ## Synopsis
 
-	Pigeon::route('posts/(:id)', 'posts/show/$1');
+	Pigeon::route('posts/(:num)', 'posts/show/$1');
 
 	Pigeon::get('posts', array( 'Posts', 'index' ));
 	Pigeon::post('posts', 'Posts#create' );
-	Pigeon::put('posts/(:id)', array( 'Posts', 'update' ));
-	Pigeon::delete('posts/(:id)', array( 'Posts', 'delete' ));
+	Pigeon::put('posts/(:num)', array( 'Posts', 'update' ));
+	Pigeon::delete('posts/(:num)', array( 'Posts', 'delete' ));
 
 	Pigeon::resources('posts');
 
@@ -24,15 +24,27 @@ CodeIgniter's routing engine is _far too basic_. Pigeon wraps around the core ro
 
 The most basic routing mechanism is the `route` method. You can pass through a traditional CodeIgniter routing pattern here:
 
-	Pigeon::route('posts/(:id)', 'posts/show/$1');
+	Pigeon::route('posts/(:num)', 'posts/show/$1');
 
 The `route` method also allows a `controller#action` input:
 
-	Pigeon::route('posts/(:id)', 'posts#show');
+	Pigeon::route('posts/(:num)', 'posts#show');
 
 You can also pass through an array of the controller and action:
 
-	Pigeon::route('posts/(:id)', array( 'Posts', 'show' ));
+	Pigeon::route('posts/(:num)', array( 'Posts', 'show' ));
+
+## HTTP Verb Routing
+
+Pigeon also allows you to only route to a certain function when an HTTP verb is used. This is particularly useful when creating a RESTful system:
+
+	Pigeon::get('posts/(:id)', 'posts/show/$1');
+	Pigeon::post('posts', 'posts/create');
+	Pigeon::put('posts/(:id)', 'posts/update/$1');
+	Pigeon::delete('posts/(:id)', 'posts/delete/$1');
+	Pigeon::patch('posts/(:id)', 'posts/delete/$1');
+	Pigeon::head('posts/(:id)', 'posts/delete/$1');
+	Pigeon::options('posts/(:id)', 'posts/delete/$1');
 
 ## Installation
 

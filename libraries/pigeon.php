@@ -53,6 +53,66 @@ class Pigeon
 	}
 
 	/* --------------------------------------------------------------
+     * HTTP VERB ROUTING
+     * ------------------------------------------------------------ */
+
+	public static function get($from, $to)
+	{
+		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'GET')
+		{
+			self::route($from, $to);
+		}
+	}
+
+	public static function post($from, $to)
+	{
+		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST')
+		{
+			self::route($from, $to);
+		}
+	}
+
+	public static function put($from, $to)
+	{
+		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'PUT')
+		{
+			self::route($from, $to);
+		}
+	}
+
+	public static function delete($from, $to)
+	{
+		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'DELETE')
+		{
+			self::route($from, $to);
+		}
+	}
+
+	public static function patch($from, $to)
+	{
+		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'PATCH')
+		{
+			self::route($from, $to);
+		}
+	}
+
+	public static function head($from, $to)
+	{
+		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'HEAD')
+		{
+			self::route($from, $to);
+		}
+	}
+
+	public static function options($from, $to)
+	{
+		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS')
+		{
+			self::route($from, $to);
+		}
+	}
+
+	/* --------------------------------------------------------------
      * UTILITY FUNCTIONS
      * ------------------------------------------------------------ */
 
