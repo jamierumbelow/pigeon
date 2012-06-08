@@ -21,11 +21,22 @@ class Pigeon
 
 	public static function route($from, $to)
 	{
-		if (preg_match('/^([a-zA-Z\_\-0-9\/]+)#([a-zA-Z\_\-0-9\/]+)$/m', $to, $matches))
+		$parameterfy = FALSE;
+
+		// Allow for array based routes and hashrouters
+		if (is_array($to))
+		{
+			$to = strtolower($to[0]) . '/' . strtolower($to[1]);
+			$parameterfy = TRUE;
+		}
+		elseif (preg_match('/^([a-zA-Z\_\-0-9\/]+)#([a-zA-Z\_\-0-9\/]+)$/m', $to, $matches))
 		{
 			$to = $matches[1] . '/' . $matches[2];
+			$parameterfy = TRUE;
+		}
 
-			if (preg_match_all('/\/\((.*?)\)/', $from, $matches))
+		// Account for parameters in the URL if we need to
+		if ($parameterfy && preg_match_all('/\/\((.*?)\)/', $from, $matches))
 			{
 				$params = '';
 
@@ -37,7 +48,6 @@ class Pigeon
 
 				$to .= $params;
 			}
-		}
 
 		self::$routes[$from] = $to;
 	}

@@ -30,6 +30,10 @@ The `route` method also allows a `controller#action` input:
 
 	Pigeon::route('posts/(:id)', 'posts#show');
 
+You can also pass through an array of the controller and action:
+
+	Pigeon::route('posts/(:id)', array( 'Posts', 'show' ));
+
 ## Installation
 
 Install with [Composer](http://getcomposer.org/). Install Composer for your project:

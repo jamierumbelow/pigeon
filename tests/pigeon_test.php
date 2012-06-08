@@ -49,6 +49,14 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 								   'posts/(:any)/(:num)' => 'posts/show/$1/$2' ), Pigeon::draw());
 	}
 
+	public function test_route_works_with_array()
+	{
+		Pigeon::route('posts/people', array( 'Posts', 'action' ));
+		Pigeon::route('posts/(:num)', array( 'Posts', 'show' ));
+
+		$this->assertEquals(array( 'posts/people' => 'posts/action', 'posts/(:num)' => 'posts/show/$1' ), Pigeon::draw());
+	}
+
 	/* --------------------------------------------------------------
      * UTILITY FUNCTIONS
      * ------------------------------------------------------------ */
