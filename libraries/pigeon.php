@@ -113,6 +113,20 @@ class Pigeon
 	}
 
 	/* --------------------------------------------------------------
+     * RESTFUL ROUTING
+     * ------------------------------------------------------------ */
+
+	public static function resources($name)
+	{
+		self::get($name, $name . '/index');
+		self::get($name . '/new', $name . '/new');
+		self::get($name . '/(:any)', $name . '/show/$1');
+		self::post($name, $name . '/create');
+		self::put($name . '/(:any)', $name . '/update/$1');
+		self::delete($name . '/(:any)', $name . '/delete/$1');
+	}
+
+	/* --------------------------------------------------------------
      * UTILITY FUNCTIONS
      * ------------------------------------------------------------ */
 

@@ -12,12 +12,6 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 {
 
 	/* --------------------------------------------------------------
-     * VARIABLES
-     * ------------------------------------------------------------ */
-
-	protected $pigeon;
-
-	/* --------------------------------------------------------------
      * TEST INFRASTRUCTURE
      * ------------------------------------------------------------ */
 
@@ -150,6 +144,42 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
 								   'posts/people' => 'posts/action',
 								   'posts/(:num)' => 'posts/show/$1' ), Pigeon::draw());
+	}
+
+	/* --------------------------------------------------------------
+     * RESTFUL ROUTES
+     * ------------------------------------------------------------ */
+
+	public function test_resources()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'GET';
+
+		Pigeon::resources('books');
+
+		$this->assertEquals(array( 'books' => 'books/index', 
+								   'books/(:any)' => 'books/show/$1',
+								   'books/new' => 'books/new' ), Pigeon::draw());
+
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+
+		Pigeon::clear();
+		Pigeon::resources('books');
+
+		$this->assertEquals(array( 'books' => 'books/create' ), Pigeon::draw());
+
+		$_SERVER['REQUEST_METHOD'] = 'PUT';
+
+		Pigeon::clear();
+		Pigeon::resources('books');
+
+		$this->assertEquals(array( 'books/(:any)' => 'books/update/$1' ), Pigeon::draw());
+
+		$_SERVER['REQUEST_METHOD'] = 'DELETE';
+
+		Pigeon::clear();
+		Pigeon::resources('books');
+
+		$this->assertEquals(array( 'books/(:any)' => 'books/delete/$1' ), Pigeon::draw());
 	}
 
 	/* --------------------------------------------------------------
