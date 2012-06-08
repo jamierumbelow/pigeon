@@ -20,6 +20,16 @@ CodeIgniter's routing engine is _far too basic_. Pigeon wraps around the core ro
 
 	$route = Pigeon::draw();
 
+## Basic routing
+
+The most basic routing mechanism is the `route` method. You can pass through a traditional CodeIgniter routing pattern here:
+
+	Pigeon::route('posts/(:id)', 'posts/show/$1');
+
+The `route` method also allows a `controller#action` input:
+
+	Pigeon::route('posts/(:id)', 'posts#show');
+
 ## Installation
 
 Install with [Composer](http://getcomposer.org/). Install Composer for your project:
