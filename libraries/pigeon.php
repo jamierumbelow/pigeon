@@ -146,18 +146,25 @@ class Pigeon
      * RESTFUL ROUTING
      * ------------------------------------------------------------ */
 
-	public function resources($name)
+	public function resources($name, $nested = FALSE)
 	{
-		$this->get($name, $name . '/index');
-		$this->get($name . '/new', $name . '/new');
-		$this->get($name . '/(:any)/edit', $name . '/edit/$1');
-		$this->get($name . '/(:any)', $name . '/show/$1');
-		$this->post($name, $name . '/create');
-		$this->put($name . '/(:any)', $name . '/update/$1');
-		$this->delete($name . '/(:any)', $name . '/delete/$1');
+		$this->get($name, $name . '#index');
+		$this->get($name . '/new', $name . '#new');
+		$this->get($name . '/(:any)/edit', $name . '#edit');
+		$this->get($name . '/(:any)', $name . '#show');
+		$this->post($name, $name . '#create');
+		$this->put($name . '/(:any)', $name . '#update');
+		$this->delete($name . '/(:any)', $name . '#delete');
+
+		if ($nested && is_callable($nested))
+		{
+			$nested_pigeon = new Pigeon($name . '/(:any)');
+			call_user_func_array($nested, array( &$nested_pigeon ));
+			$this->temporary_routes = array_merge($this->temporary_routes, $nested_pigeon->temporary_routes);
+		}
 	}
 
-	public function resource($name)
+	public function resource($name, $nested = FALSE)
 	{
 		$this->get($name, $name . '/show');
 		$this->get($name . '/new', $name . '/new');
@@ -165,6 +172,13 @@ class Pigeon
 		$this->post($name, $name . '/create');
 		$this->put($name, $name . '/update');
 		$this->delete($name, $name . '/delete');
+
+		if ($nested && is_callable($nested))
+		{
+			$nested_pigeon = new Pigeon($name);
+			call_user_func_array($nested, array( &$nested_pigeon ));
+			$this->temporary_routes = array_merge($this->temporary_routes, $nested_pigeon->temporary_routes);
+		}
 	}
 
 	/* --------------------------------------------------------------

@@ -282,6 +282,42 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 								   'posts/(:num)/assets/(:num)' => 'assets/show/$1/$2' ), Pigeon::draw());
 	}
 
+	public function test_resources_can_be_nested()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'GET';
+
+		Pigeon::map(function($r){
+			$r->resources('books', function($r){
+				$r->resources('authors');
+			});
+		});
+
+		$this->assertEquals(array( 'books' => 'books/index', 
+								   'books/(:any)' => 'books/show/$1',
+								   'books/(:any)/edit' => 'books/edit/$1',
+								   'books/new' => 'books/new',
+								   'books/(:any)/authors' => 'authors/index/$1',
+								   'books/(:any)/authors/(:any)' => 'authors/show/$1/$2',
+								   'books/(:any)/authors/(:any)/edit' => 'authors/edit/$1/$2',
+								   'books/(:any)/authors/new' => 'authors/new/$1' ), Pigeon::draw());
+	}
+
+	public function test_singular_resources_can_be_nested()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'GET';
+
+		Pigeon::map(function($r){
+			$r->resource('profile', function($r){
+				$r->get('rescan', 'profile#rescan');
+			});
+		});
+
+		$this->assertEquals(array( 'profile' => 'profile/show',
+								   'profile/new' => 'profile/new',
+								   'profile/edit' => 'profile/edit',
+								   'profile/rescan' => 'profile/rescan' ), Pigeon::draw());
+	}
+
 	/* --------------------------------------------------------------
      * UTILITY FUNCTIONS
      * ------------------------------------------------------------ */
