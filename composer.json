@@ -2,7 +2,7 @@
     "name": "jamierumbelow/pigeon",
     "version": "v0.1.0",
     "type": "library",
-    "description": "Clever, elegant routing engine for CodeIgniter",
+    "description": "Intelligent, elegant routing for CodeIgniter",
     "keywords": ["codeigniter","routing","routes","rest"],
     "homepage": "https://github.com/jamierumbelow/pigeon",
     "license": "MIT",
