@@ -20,6 +20,30 @@ CodeIgniter's routing engine is _far too basic_. Pigeon wraps around the core ro
 
 	$route = Pigeon::draw();
 
+## Installation
+
+Install with [Composer](http://getcomposer.org/). Install Composer for your project:
+
+    $ curl -s http://getcomposer.org/installer | php
+
+...and create/edit your `composer.json`:
+
+    {
+        "require": {
+            "jamierumbelow/pigeon": "*"
+        }
+    }
+
+...and install it!
+
+    $ php composer.phar install
+
+Remember to include Composer's autoload file in `index.php`:
+
+    require_once './vendor/autoload.php';
+
+Alternatively, download and drag the **Pigeon.php** file into your _application/libraries_ folder. Autoload the library and away you go.
+
 ## How It Works
 
 You define your routes using Pigeon's DSL inside your *config/routes.php* file. Pigeon builds up the routes array internally; to expose it to CodeIgniter, you need to set the standard `$route` variable using `draw()`:
@@ -96,30 +120,6 @@ This will grab the post ID from the post URL and pass it through:
 	$route['posts/(:num)'] = 'posts/show/$1';
 	$route['posts/(:num)/files/(:num)'] = 'files/show/$1/$2';
 
-## Installation
-
-Install with [Composer](http://getcomposer.org/). Install Composer for your project:
-
-    $ curl -s http://getcomposer.org/installer | php
-
-...and create/edit your `composer.json`:
-
-    {
-        "require": {
-            "jamierumbelow/pigeon": "*"
-        }
-    }
-
-...and install it!
-
-    $ php composer.phar install
-
-Remember to include Composer's autoload file in `index.php`:
-
-    require_once './vendor/autoload.php';
-
-Alternatively, download and drag the **Pigeon.php** file into your _application/libraries_ folder. Autoload the library and away you go.
-
 ## Unit Tests
 
 Install [PHPUnit](https://github.com/sebastianbergmann/phpunit). I'm running version 3.6.10.
@@ -127,3 +127,8 @@ Install [PHPUnit](https://github.com/sebastianbergmann/phpunit). I'm running ver
 Then, simply run the `phpunit` command on the test file:
 
     $ phpunit tests/Pigeon_test.php
+
+## Changelog
+
+**Version 0.1.0**
+* Initial Release
