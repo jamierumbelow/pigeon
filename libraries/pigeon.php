@@ -120,6 +120,7 @@ class Pigeon
 	{
 		self::get($name, $name . '/index');
 		self::get($name . '/new', $name . '/new');
+		self::get($name . '/(:any)/edit', $name . '/edit/$1');
 		self::get($name . '/(:any)', $name . '/show/$1');
 		self::post($name, $name . '/create');
 		self::put($name . '/(:any)', $name . '/update/$1');
