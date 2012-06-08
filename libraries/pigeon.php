@@ -15,11 +15,34 @@ class Pigeon
 
 	public static $routes = array();
 
+	public $temporary_routes = array();
+	public $namespace = '';
+
+	/* --------------------------------------------------------------
+     * GENERIC METHODS
+     * ------------------------------------------------------------ */
+
+	public function __construct($namespace = FALSE)
+	{
+		if ($namespace)
+		{
+			$this->namespace = $namespace;
+		}
+	}
+
+	public static function map($callback)
+	{
+		$pigeon = new Pigeon();
+		call_user_func_array($callback, array( &$pigeon ));
+
+		self::$routes = $pigeon->temporary_routes;
+	}
+
 	/* --------------------------------------------------------------
      * BASIC ROUTING
      * ------------------------------------------------------------ */
 
-	public static function route($from, $to)
+	public function route($from, $to, $nested = FALSE)
 	{
 		$parameterfy = FALSE;
 
@@ -35,80 +58,87 @@ class Pigeon
 			$parameterfy = TRUE;
 		}
 
+		// Do we have a namespace?
+		if ($this->namespace)
+		{
+			$from = $this->namespace . '/' . $from;
+		}
+
 		// Account for parameters in the URL if we need to
-		if ($parameterfy && preg_match_all('/\/\((.*?)\)/', $from, $matches))
-			{
-				$params = '';
+		if ($parameterfy)
+		{
+			$to = $this->parameterfy($from, $to);
+		}
 
-				foreach ($matches[1] as $i => $match)
-				{
-					$i++;
-					$params .= "/\$$i";
-				}
+		// Apply our routes
+		$this->temporary_routes[$from] = $to;
 
-				$to .= $params;
-			}
-
-		self::$routes[$from] = $to;
+		// Do we have a nesting function?
+		if ($nested && is_callable($nested))
+		{
+			$nested_pigeon = new Pigeon($from);
+			call_user_func_array($nested, array( &$nested_pigeon ));
+			$this->temporary_routes = array_merge($this->temporary_routes, $nested_pigeon->temporary_routes);
+		}
 	}
 
 	/* --------------------------------------------------------------
      * HTTP VERB ROUTING
      * ------------------------------------------------------------ */
 
-	public static function get($from, $to)
+	public function get($from, $to)
 	{
 		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'GET')
 		{
-			self::route($from, $to);
+			$this->route($from, $to);
 		}
 	}
 
-	public static function post($from, $to)
+	public function post($from, $to)
 	{
 		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			self::route($from, $to);
+			$this->route($from, $to);
 		}
 	}
 
-	public static function put($from, $to)
+	public function put($from, $to)
 	{
 		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'PUT')
 		{
-			self::route($from, $to);
+			$this->route($from, $to);
 		}
 	}
 
-	public static function delete($from, $to)
+	public function delete($from, $to)
 	{
 		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'DELETE')
 		{
-			self::route($from, $to);
+			$this->route($from, $to);
 		}
 	}
 
-	public static function patch($from, $to)
+	public function patch($from, $to)
 	{
 		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'PATCH')
 		{
-			self::route($from, $to);
+			$this->route($from, $to);
 		}
 	}
 
-	public static function head($from, $to)
+	public function head($from, $to)
 	{
 		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'HEAD')
 		{
-			self::route($from, $to);
+			$this->route($from, $to);
 		}
 	}
 
-	public static function options($from, $to)
+	public function options($from, $to)
 	{
 		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS')
 		{
-			self::route($from, $to);
+			$this->route($from, $to);
 		}
 	}
 
@@ -116,25 +146,25 @@ class Pigeon
      * RESTFUL ROUTING
      * ------------------------------------------------------------ */
 
-	public static function resources($name)
+	public function resources($name)
 	{
-		self::get($name, $name . '/index');
-		self::get($name . '/new', $name . '/new');
-		self::get($name . '/(:any)/edit', $name . '/edit/$1');
-		self::get($name . '/(:any)', $name . '/show/$1');
-		self::post($name, $name . '/create');
-		self::put($name . '/(:any)', $name . '/update/$1');
-		self::delete($name . '/(:any)', $name . '/delete/$1');
+		$this->get($name, $name . '/index');
+		$this->get($name . '/new', $name . '/new');
+		$this->get($name . '/(:any)/edit', $name . '/edit/$1');
+		$this->get($name . '/(:any)', $name . '/show/$1');
+		$this->post($name, $name . '/create');
+		$this->put($name . '/(:any)', $name . '/update/$1');
+		$this->delete($name . '/(:any)', $name . '/delete/$1');
 	}
 
-	public static function resource($name)
+	public function resource($name)
 	{
-		self::get($name, $name . '/show');
-		self::get($name . '/new', $name . '/new');
-		self::get($name . '/edit', $name . '/edit');
-		self::post($name, $name . '/create');
-		self::put($name, $name . '/update');
-		self::delete($name, $name . '/delete');
+		$this->get($name, $name . '/show');
+		$this->get($name . '/new', $name . '/new');
+		$this->get($name . '/edit', $name . '/edit');
+		$this->post($name, $name . '/create');
+		$this->put($name, $name . '/update');
+		$this->delete($name, $name . '/delete');
 	}
 
 	/* --------------------------------------------------------------
@@ -155,5 +185,26 @@ class Pigeon
 	public static function draw()
 	{
 		return self::$routes;
+	}
+
+	/**
+	 * Extract the URL parameters from $from and copy to $to
+	 */
+	public static function parameterfy($from, $to)
+	{
+		if (preg_match_all('/\/\((.*?)\)/', $from, $matches))
+		{
+			$params = '';
+
+			foreach ($matches[1] as $i => $match)
+			{
+				$i = $i + 1;
+				$params .= "/\$$i";
+			}
+
+			$to .= $params;
+		}
+
+		return $to;
 	}
 }

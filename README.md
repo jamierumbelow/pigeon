@@ -72,6 +72,30 @@ Pigeon supports RESTful resource based routes. A simple call to `resources` will
 
 You can also define a singular resource with `resource`.
 
+## Nesting Routes
+
+Pigeon also makes it very easy to nest routes inside other routes:
+
+	Pigeon::route('posts/(:num)', 'posts#show', function($r){
+		$r->route('comments', 'comments#show');
+	});
+
+The above is equivalent to:
+
+	$route['posts/(:num)'] = 'posts/show/$1';
+	$route['posts/(:num)/comments'] = 'comments/show/$1';
+
+The nesting engine is clever enough to account for parameters in the URL and any further params in nested URLs, which feels very similar to the usual way we write our routes in CI:
+	
+	Pigeon::route('posts/(:num)', 'posts#show', function($r){
+		$r->route('files/(:num)', 'files#show');
+	});
+
+This will grab the post ID from the post URL and pass it through:
+
+	$route['posts/(:num)'] = 'posts/show/$1';
+	$route['posts/(:num)/files/(:num)'] = 'files/show/$1/$2';
+
 ## Installation
 
 Install with [Composer](http://getcomposer.org/). Install Composer for your project:

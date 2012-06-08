@@ -21,22 +21,39 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 	}
 
 	/* --------------------------------------------------------------
+     * GENERIC METHODS
+     * ------------------------------------------------------------ */
+
+	public function test_map()
+	{
+		$test = $this;
+
+		Pigeon::map(function ($r) use (&$test) {
+			$test->assertInstanceOf('Pigeon', $r);
+		});
+	}
+
+	/* --------------------------------------------------------------
      * BASIC ROUTES
      * ------------------------------------------------------------ */
 
 	public function test_route_works_like_ci_routes()
 	{
-		Pigeon::route('posts/(:any)', 'posts/show/$1');
-		Pigeon::route('books', 'books/index');
+		Pigeon::map(function($r){
+			$r->route('posts/(:any)', 'posts/show/$1');
+			$r->route('books', 'books/index');
+		});
 
 		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 'books' => 'books/index' ), Pigeon::draw());
 	}
 
 	public function test_route_works_with_hash_to()
 	{
-		Pigeon::route('posts/people', 'posts#action');
-		Pigeon::route('posts/(:any)', 'posts#show');
-		Pigeon::route('posts/(:any)/(:num)', 'posts#show');
+		Pigeon::map(function($r){
+			$r->route('posts/people', 'posts#action');
+			$r->route('posts/(:any)', 'posts#show');
+			$r->route('posts/(:any)/(:num)', 'posts#show');
+		});
 
 		$this->assertEquals(array( 'posts/people' => 'posts/action', 
 								   'posts/(:any)' => 'posts/show/$1', 
@@ -45,8 +62,10 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 
 	public function test_route_works_with_array()
 	{
-		Pigeon::route('posts/people', array( 'Posts', 'action' ));
-		Pigeon::route('posts/(:num)', array( 'Posts', 'show' ));
+		Pigeon::map(function($r){
+			$r->route('posts/people', array( 'Posts', 'action' ));
+			$r->route('posts/(:num)', array( 'Posts', 'show' ));
+		});
 
 		$this->assertEquals(array( 'posts/people' => 'posts/action', 'posts/(:num)' => 'posts/show/$1' ), Pigeon::draw());
 	}
@@ -59,9 +78,11 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 	{
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 
-		Pigeon::get('posts/(:any)', 'posts/show/$1');
-		Pigeon::get('posts/(:num)', 'posts#show');
-		Pigeon::get('posts/people', array( 'Posts', 'action' ));
+		Pigeon::map(function($r){
+			$r->get('posts/(:any)', 'posts/show/$1');
+			$r->get('posts/(:num)', 'posts#show');
+			$r->get('posts/people', array( 'Posts', 'action' ));
+		});
 
 		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
 								   'posts/people' => 'posts/action',
@@ -72,9 +93,11 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 	{
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 
-		Pigeon::post('posts/(:any)', 'posts/show/$1');
-		Pigeon::post('posts/(:num)', 'posts#show');
-		Pigeon::post('posts/people', array( 'Posts', 'action' ));
+		Pigeon::map(function($r){
+			$r->post('posts/(:any)', 'posts/show/$1');
+			$r->post('posts/(:num)', 'posts#show');
+			$r->post('posts/people', array( 'Posts', 'action' ));
+		});
 
 		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
 								   'posts/people' => 'posts/action',
@@ -85,9 +108,11 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 	{
 		$_SERVER['REQUEST_METHOD'] = 'PUT';
 
-		Pigeon::put('posts/(:any)', 'posts/show/$1');
-		Pigeon::put('posts/(:num)', 'posts#show');
-		Pigeon::put('posts/people', array( 'Posts', 'action' ));
+		Pigeon::map(function($r){
+			$r->put('posts/(:any)', 'posts/show/$1');
+			$r->put('posts/(:num)', 'posts#show');
+			$r->put('posts/people', array( 'Posts', 'action' ));
+		});
 
 		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
 								   'posts/people' => 'posts/action',
@@ -98,9 +123,11 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 	{
 		$_SERVER['REQUEST_METHOD'] = 'DELETE';
 
-		Pigeon::delete('posts/(:any)', 'posts/show/$1');
-		Pigeon::delete('posts/(:num)', 'posts#show');
-		Pigeon::delete('posts/people', array( 'Posts', 'action' ));
+		Pigeon::map(function($r){
+			$r->delete('posts/(:any)', 'posts/show/$1');
+			$r->delete('posts/(:num)', 'posts#show');
+			$r->delete('posts/people', array( 'Posts', 'action' ));
+		});
 
 		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
 								   'posts/people' => 'posts/action',
@@ -111,9 +138,11 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 	{
 		$_SERVER['REQUEST_METHOD'] = 'PATCH';
 
-		Pigeon::patch('posts/(:any)', 'posts/show/$1');
-		Pigeon::patch('posts/(:num)', 'posts#show');
-		Pigeon::patch('posts/people', array( 'Posts', 'action' ));
+		Pigeon::map(function($r){
+			$r->patch('posts/(:any)', 'posts/show/$1');
+			$r->patch('posts/(:num)', 'posts#show');
+			$r->patch('posts/people', array( 'Posts', 'action' ));
+		});
 
 		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
 								   'posts/people' => 'posts/action',
@@ -124,9 +153,11 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 	{
 		$_SERVER['REQUEST_METHOD'] = 'HEAD';
 
-		Pigeon::head('posts/(:any)', 'posts/show/$1');
-		Pigeon::head('posts/(:num)', 'posts#show');
-		Pigeon::head('posts/people', array( 'Posts', 'action' ));
+		Pigeon::map(function($r){
+			$r->head('posts/(:any)', 'posts/show/$1');
+			$r->head('posts/(:num)', 'posts#show');
+			$r->head('posts/people', array( 'Posts', 'action' ));
+		});
 
 		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
 								   'posts/people' => 'posts/action',
@@ -137,9 +168,11 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 	{
 		$_SERVER['REQUEST_METHOD'] = 'OPTIONS';
 
-		Pigeon::options('posts/(:any)', 'posts/show/$1');
-		Pigeon::options('posts/(:num)', 'posts#show');
-		Pigeon::options('posts/people', array( 'Posts', 'action' ));
+		Pigeon::map(function($r){
+			$r->options('posts/(:any)', 'posts/show/$1');
+			$r->options('posts/(:num)', 'posts#show');
+			$r->options('posts/people', array( 'Posts', 'action' ));
+		});
 
 		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 
 								   'posts/people' => 'posts/action',
@@ -154,7 +187,9 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 	{
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 
-		Pigeon::resources('books');
+		Pigeon::map(function($r){
+			$r->resources('books');
+		});
 
 		$this->assertEquals(array( 'books' => 'books/index', 
 								   'books/(:any)' => 'books/show/$1',
@@ -164,21 +199,27 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 
 		Pigeon::clear();
-		Pigeon::resources('books');
+		Pigeon::map(function($r){
+			$r->resources('books');
+		});
 
 		$this->assertEquals(array( 'books' => 'books/create' ), Pigeon::draw());
 
 		$_SERVER['REQUEST_METHOD'] = 'PUT';
 
 		Pigeon::clear();
-		Pigeon::resources('books');
+		Pigeon::map(function($r){
+			$r->resources('books');
+		});
 
 		$this->assertEquals(array( 'books/(:any)' => 'books/update/$1' ), Pigeon::draw());
 
 		$_SERVER['REQUEST_METHOD'] = 'DELETE';
 
 		Pigeon::clear();
-		Pigeon::resources('books');
+		Pigeon::map(function($r){
+			$r->resources('books');
+		});
 
 		$this->assertEquals(array( 'books/(:any)' => 'books/delete/$1' ), Pigeon::draw());
 	}
@@ -187,7 +228,9 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 	{
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 
-		Pigeon::resource('profile');
+		Pigeon::map(function($r){
+			$r->resource('profile');
+		});
 
 		$this->assertEquals(array( 'profile' => 'profile/show',
 								   'profile/new' => 'profile/new',
@@ -196,23 +239,47 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 
 		Pigeon::clear();
-		Pigeon::resource('profile');
+		Pigeon::map(function($r){
+			$r->resource('profile');
+		});
 
 		$this->assertEquals(array( 'profile' => 'profile/create' ), Pigeon::draw());
 
 		$_SERVER['REQUEST_METHOD'] = 'PUT';
 
 		Pigeon::clear();
-		Pigeon::resource('profile');
+		Pigeon::map(function($r){
+			$r->resource('profile');
+		});
 
 		$this->assertEquals(array( 'profile' => 'profile/update' ), Pigeon::draw());
 
 		$_SERVER['REQUEST_METHOD'] = 'DELETE';
 
 		Pigeon::clear();
-		Pigeon::resource('profile');
+		Pigeon::map(function($r){
+			$r->resource('profile');
+		});
 
 		$this->assertEquals(array( 'profile' => 'profile/delete' ), Pigeon::draw());
+	}
+
+	/* --------------------------------------------------------------
+     * NESTED RESOURCES
+     * ------------------------------------------------------------ */
+
+	public function test_basic_route_works_nested()
+	{
+		Pigeon::map(function($r){
+			$r->route('posts/(:num)', 'posts#show', function($r){
+				$r->route('comments', 'comments#show');
+				$r->route('assets/(:num)', 'assets#show');
+			});
+		});
+
+		$this->assertEquals(array( 'posts/(:num)' => 'posts/show/$1', 
+								   'posts/(:num)/comments' => 'comments/show/$1',
+								   'posts/(:num)/assets/(:num)' => 'assets/show/$1/$2' ), Pigeon::draw());
 	}
 
 	/* --------------------------------------------------------------
@@ -234,5 +301,11 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		Pigeon::$routes = array( 'some', 'array', 'here' );
 
 		$this->assertEquals(Pigeon::$routes, Pigeon::draw());
+	}
+
+	public function test_parameterfy()
+	{
+		$this->assertEquals('some/to/string/$1', Pigeon::parameterfy('posts/(:num)', 'some/to/string'));
+		$this->assertEquals('blah/blah/$1/$2/$3', Pigeon::parameterfy('books/(:num)/blah/(:any)/(:num)', 'blah/blah'));
 	}
 }
