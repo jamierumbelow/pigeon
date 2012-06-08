@@ -46,6 +46,24 @@ Pigeon also allows you to only route to a certain function when an HTTP verb is 
 	Pigeon::head('posts/(:id)', 'posts/delete/$1');
 	Pigeon::options('posts/(:id)', 'posts/delete/$1');
 
+## RESTful Resources
+
+Pigeon supports RESTful resource based routes. A simple call to `resources` will generate a bunch of routes to facilitate a RESTful style application:
+
+	Pigeon::resources('posts');
+
+...is the same as:
+
+	Pigeon::get('posts', 'posts/index');
+	Pigeon::get('posts/new', 'posts/new');
+	Pigeon::get('posts/(:any)/edit', 'posts/edit/$1');
+	Pigeon::get('posts/(:any)', 'posts/show/$1');
+	Pigeon::post('posts', 'posts/create');
+	Pigeon::put('posts/(:any)', 'posts/update/$1');
+	Pigeon::delete('posts/(:any)', 'posts/delete/$1');
+
+You can also define a singular resource with `resource`.
+
 ## Installation
 
 Install with [Composer](http://getcomposer.org/). Install Composer for your project:
