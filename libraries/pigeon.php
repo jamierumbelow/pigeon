@@ -21,6 +21,24 @@ class Pigeon
 
 	public static function route($from, $to)
 	{
+		if (preg_match('/^([a-zA-Z\_\-0-9\/]+)#([a-zA-Z\_\-0-9\/]+)$/m', $to, $matches))
+		{
+			$to = $matches[1] . '/' . $matches[2];
+
+			if (preg_match_all('/\/\((.*?)\)/', $from, $matches))
+			{
+				$params = '';
+
+				foreach ($matches[1] as $i => $match)
+				{
+					$i++;
+					$params .= "/\$$i";
+				}
+
+				$to .= $params;
+			}
+		}
+
 		self::$routes[$from] = $to;
 	}
 

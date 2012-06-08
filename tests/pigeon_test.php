@@ -38,6 +38,17 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 'books' => 'books/index' ), Pigeon::draw());
 	}
 
+	public function test_route_works_with_hash_to()
+	{
+		Pigeon::route('posts/people', 'posts#action');
+		Pigeon::route('posts/(:any)', 'posts#show');
+		Pigeon::route('posts/(:any)/(:num)', 'posts#show');
+
+		$this->assertEquals(array( 'posts/people' => 'posts/action', 
+								   'posts/(:any)' => 'posts/show/$1', 
+								   'posts/(:any)/(:num)' => 'posts/show/$1/$2' ), Pigeon::draw());
+	}
+
 	/* --------------------------------------------------------------
      * UTILITY FUNCTIONS
      * ------------------------------------------------------------ */
