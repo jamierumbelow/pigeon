@@ -20,6 +20,14 @@ CodeIgniter's routing engine is _far too basic_. Pigeon wraps around the core ro
 
 	$route = Pigeon::draw();
 
+## How It Works
+
+You define your routes using Pigeon's DSL inside your *config/routes.php* file. Pigeon builds up the routes array internally; to expose it to CodeIgniter, you need to set the standard `$route` variable using `draw()`:
+
+	$route = Pigeon::draw();
+
+Remember to do this **after you define your routes**.
+
 ## Basic routing
 
 The most basic routing mechanism is the `route` method. You can pass through a traditional CodeIgniter routing pattern here:
@@ -88,8 +96,7 @@ Remember to include Composer's autoload file in `index.php`:
 
 Alternatively, download and drag the **Pigeon.php** file into your _application/libraries_ folder. Autoload the library and away you go.
 
-Unit Tests
-----------
+## Unit Tests
 
 Install [PHPUnit](https://github.com/sebastianbergmann/phpunit). I'm running version 3.6.10.
 
