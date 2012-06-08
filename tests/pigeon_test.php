@@ -10,15 +10,52 @@ require_once 'libraries/pigeon.php';
 
 class Pigeon_test extends PHPUnit_Framework_TestCase
 {
+
+	/* --------------------------------------------------------------
+     * VARIABLES
+     * ------------------------------------------------------------ */
+
 	protected $pigeon;
 
-	public function setUp()
+	/* --------------------------------------------------------------
+     * TEST INFRASTRUCTURE
+     * ------------------------------------------------------------ */
+
+	public function tearDown()
 	{
-		$this->pigeon = new Pigeon();
+		Pigeon::clear();
 	}
 
-	public function test_okay()
+	/* --------------------------------------------------------------
+     * BASIC ROUTES
+     * ------------------------------------------------------------ */
+
+	public function test_route_works_like_ci_routes()
 	{
-		$this->assertTrue(true);
+		Pigeon::route('posts/(:any)', 'posts/show/$1');
+		Pigeon::route('books', 'books/index');
+
+		$this->assertEquals(array( 'posts/(:any)' => 'posts/show/$1', 'books' => 'books/index' ), Pigeon::draw());
+	}
+
+	/* --------------------------------------------------------------
+     * UTILITY FUNCTIONS
+     * ------------------------------------------------------------ */
+
+	public function test_clear()
+	{
+		Pigeon::$routes = 'TEST';
+
+		Pigeon::clear();
+
+		$this->assertTrue(is_array(Pigeon::$routes));
+		$this->assertEmpty(Pigeon::$routes);
+	}
+
+	public function test_draw()
+	{
+		Pigeon::$routes = array( 'some', 'array', 'here' );
+
+		$this->assertEquals(Pigeon::$routes, Pigeon::draw());
 	}
 }
