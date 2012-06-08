@@ -158,6 +158,7 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 
 		$this->assertEquals(array( 'books' => 'books/index', 
 								   'books/(:any)' => 'books/show/$1',
+								   'books/(:any)/edit' => 'books/edit/$1',
 								   'books/new' => 'books/new' ), Pigeon::draw());
 
 		$_SERVER['REQUEST_METHOD'] = 'POST';
