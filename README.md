@@ -134,6 +134,7 @@ Then, simply run the `phpunit` command on the test file:
 
 **Version 0.2.0 - IN DEVELOPMENT**
 * Adjusted the resource routing to route to *create_new* rather than *new*
+* Replaced `(:any)` in resource routing with `([a-zA-Z0-9\-_]+)`
 
 **Version 0.1.0**
 * Initial Release

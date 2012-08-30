@@ -150,15 +150,15 @@ class Pigeon
 	{
 		$this->get($name, $name . '#index');
 		$this->get($name . '/new', $name . '#create_new');
-		$this->get($name . '/(:any)/edit', $name . '#edit');
-		$this->get($name . '/(:any)', $name . '#show');
+		$this->get($name . '/([a-zA-Z0-9\-_]+)/edit', $name . '#edit');
+		$this->get($name . '/([a-zA-Z0-9\-_]+)', $name . '#show');
 		$this->post($name, $name . '#create');
-		$this->put($name . '/(:any)', $name . '#update');
-		$this->delete($name . '/(:any)', $name . '#delete');
+		$this->put($name . '/([a-zA-Z0-9\-_]+)', $name . '#update');
+		$this->delete($name . '/([a-zA-Z0-9\-_]+)', $name . '#delete');
 
 		if ($nested && is_callable($nested))
 		{
-			$nested_pigeon = new Pigeon($name . '/(:any)');
+			$nested_pigeon = new Pigeon($name . '/([a-zA-Z0-9\-_]+)');
 			call_user_func_array($nested, array( &$nested_pigeon ));
 			$this->temporary_routes = array_merge($this->temporary_routes, $nested_pigeon->temporary_routes);
 		}

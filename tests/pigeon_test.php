@@ -192,8 +192,8 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		});
 
 		$this->assertEquals(array( 'books' => 'books/index', 
-								   'books/(:any)' => 'books/show/$1',
-								   'books/(:any)/edit' => 'books/edit/$1',
+								   'books/([a-zA-Z0-9\-_]+)' => 'books/show/$1',
+								   'books/([a-zA-Z0-9\-_]+)/edit' => 'books/edit/$1',
 								   'books/new' => 'books/create_new' ), Pigeon::draw());
 
 		$_SERVER['REQUEST_METHOD'] = 'POST';
@@ -212,7 +212,7 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 			$r->resources('books');
 		});
 
-		$this->assertEquals(array( 'books/(:any)' => 'books/update/$1' ), Pigeon::draw());
+		$this->assertEquals(array( 'books/([a-zA-Z0-9\-_]+)' => 'books/update/$1' ), Pigeon::draw());
 
 		$_SERVER['REQUEST_METHOD'] = 'DELETE';
 
@@ -221,7 +221,7 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 			$r->resources('books');
 		});
 
-		$this->assertEquals(array( 'books/(:any)' => 'books/delete/$1' ), Pigeon::draw());
+		$this->assertEquals(array( 'books/([a-zA-Z0-9\-_]+)' => 'books/delete/$1' ), Pigeon::draw());
 	}
 
 	public function test_resource()
@@ -293,13 +293,13 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		});
 
 		$this->assertEquals(array( 'books' => 'books/index', 
-								   'books/(:any)' => 'books/show/$1',
-								   'books/(:any)/edit' => 'books/edit/$1',
+								   'books/([a-zA-Z0-9\-_]+)' => 'books/show/$1',
+								   'books/([a-zA-Z0-9\-_]+)/edit' => 'books/edit/$1',
 								   'books/new' => 'books/create_new',
-								   'books/(:any)/authors' => 'authors/index/$1',
-								   'books/(:any)/authors/(:any)' => 'authors/show/$1/$2',
-								   'books/(:any)/authors/(:any)/edit' => 'authors/edit/$1/$2',
-								   'books/(:any)/authors/new' => 'authors/create_new/$1' ), Pigeon::draw());
+								   'books/([a-zA-Z0-9\-_]+)/authors' => 'authors/index/$1',
+								   'books/([a-zA-Z0-9\-_]+)/authors/([a-zA-Z0-9\-_]+)' => 'authors/show/$1/$2',
+								   'books/([a-zA-Z0-9\-_]+)/authors/([a-zA-Z0-9\-_]+)/edit' => 'authors/edit/$1/$2',
+								   'books/([a-zA-Z0-9\-_]+)/authors/new' => 'authors/create_new/$1' ), Pigeon::draw());
 	}
 
 	public function test_singular_resources_can_be_nested()
