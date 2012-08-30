@@ -194,7 +194,7 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		$this->assertEquals(array( 'books' => 'books/index', 
 								   'books/(:any)' => 'books/show/$1',
 								   'books/(:any)/edit' => 'books/edit/$1',
-								   'books/new' => 'books/new' ), Pigeon::draw());
+								   'books/new' => 'books/create_new' ), Pigeon::draw());
 
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 
@@ -233,7 +233,7 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		});
 
 		$this->assertEquals(array( 'profile' => 'profile/show',
-								   'profile/new' => 'profile/new',
+								   'profile/new' => 'profile/create_new',
 								   'profile/edit' => 'profile/edit' ), Pigeon::draw());
 
 		$_SERVER['REQUEST_METHOD'] = 'POST';
@@ -295,11 +295,11 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		$this->assertEquals(array( 'books' => 'books/index', 
 								   'books/(:any)' => 'books/show/$1',
 								   'books/(:any)/edit' => 'books/edit/$1',
-								   'books/new' => 'books/new',
+								   'books/new' => 'books/create_new',
 								   'books/(:any)/authors' => 'authors/index/$1',
 								   'books/(:any)/authors/(:any)' => 'authors/show/$1/$2',
 								   'books/(:any)/authors/(:any)/edit' => 'authors/edit/$1/$2',
-								   'books/(:any)/authors/new' => 'authors/new/$1' ), Pigeon::draw());
+								   'books/(:any)/authors/new' => 'authors/create_new/$1' ), Pigeon::draw());
 	}
 
 	public function test_singular_resources_can_be_nested()
@@ -313,7 +313,7 @@ class Pigeon_test extends PHPUnit_Framework_TestCase
 		});
 
 		$this->assertEquals(array( 'profile' => 'profile/show',
-								   'profile/new' => 'profile/new',
+								   'profile/new' => 'profile/create_new',
 								   'profile/edit' => 'profile/edit',
 								   'profile/rescan' => 'profile/rescan' ), Pigeon::draw());
 	}

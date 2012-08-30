@@ -89,7 +89,7 @@ Pigeon supports RESTful resource based routes. A simple call to `resources` will
 ...is the same as:
 
 	$r->get('posts', 'posts/index');
-	$r->get('posts/new', 'posts/new');
+	$r->get('posts/new', 'posts/create_new');
 	$r->get('posts/(:any)/edit', 'posts/edit/$1');
 	$r->get('posts/(:any)', 'posts/show/$1');
 	$r->post('posts', 'posts/create');
@@ -131,6 +131,9 @@ Then, simply run the `phpunit` command on the test file:
     $ phpunit tests/Pigeon_test.php
 
 ## Changelog
+
+**Version 0.2.0 - IN DEVELOPMENT**
+* Adjusted the resource routing to route to *create_new* rather than *new*
 
 **Version 0.1.0**
 * Initial Release

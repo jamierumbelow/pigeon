@@ -149,7 +149,7 @@ class Pigeon
 	public function resources($name, $nested = FALSE)
 	{
 		$this->get($name, $name . '#index');
-		$this->get($name . '/new', $name . '#new');
+		$this->get($name . '/new', $name . '#create_new');
 		$this->get($name . '/(:any)/edit', $name . '#edit');
 		$this->get($name . '/(:any)', $name . '#show');
 		$this->post($name, $name . '#create');
@@ -167,7 +167,7 @@ class Pigeon
 	public function resource($name, $nested = FALSE)
 	{
 		$this->get($name, $name . '/show');
-		$this->get($name . '/new', $name . '/new');
+		$this->get($name . '/new', $name . '/create_new');
 		$this->get($name . '/edit', $name . '/edit');
 		$this->post($name, $name . '/create');
 		$this->put($name, $name . '/update');
