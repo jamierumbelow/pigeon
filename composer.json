@@ -1,6 +1,6 @@
 {
     "name": "jamierumbelow/pigeon",
-    "version": "v0.1.0",
+    "version": "v0.2.0",
     "type": "library",
     "description": "Intelligent, elegant routing for CodeIgniter",
     "keywords": ["codeigniter","routing","routes","rest"],
