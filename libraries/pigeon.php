@@ -146,16 +146,25 @@ class Pigeon
      * RESTFUL ROUTING
      * ------------------------------------------------------------ */
 
-	public function resources($name, $nested = FALSE)
-	{
-		$this->get($name, $name . '#index');
-		$this->get($name . '/new', $name . '#create_new');
-		$this->get($name . '/([a-zA-Z0-9\-_]+)/edit', $name . '#edit');
-		$this->get($name . '/([a-zA-Z0-9\-_]+)', $name . '#show');
-		$this->post($name, $name . '#create');
-		$this->put($name . '/([a-zA-Z0-9\-_]+)', $name . '#update');
-		$this->delete($name . '/([a-zA-Z0-9\-_]+)', $name . '#delete');
+	public function resources($name, $nested = FALSE, $html_friendly = FALSE)
+    {
+        $this->get($name, $name . '#index');
+        $this->get($name . '/new', $name . '#create_new');
+        $this->get($name . '/([a-zA-Z0-9\-_]+)/edit', $name . '#edit');
+        $this->get($name . '/([a-zA-Z0-9\-_]+)', $name . '#show');
+        $this->post($name, $name . '#create');
 
+        if ($html_friendly)
+        {
+            $this->post($name . '/([a-zA-Z0-9\-_]+)', $name . '#update');
+            $this->get($name . '/([a-zA-Z0-9\-_]+)/delete', $name . '#delete');
+        }
+        else
+        {
+            $this->put($name . '/([a-zA-Z0-9\-_]+)', $name . '#update');
+            $this->delete($name . '/([a-zA-Z0-9\-_]+)', $name . '#delete');   
+        }
+        
 		if ($nested && is_callable($nested))
 		{
 			$nested_pigeon = new Pigeon($name . '/([a-zA-Z0-9\-_]+)');
