@@ -88,7 +88,7 @@ class Pigeon
 
 	public function get($from, $to)
 	{
-		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'GET')
+		if ($this->_methodIs('GET'))
 		{
 			$this->route($from, $to);
 		}
@@ -96,7 +96,7 @@ class Pigeon
 
 	public function post($from, $to)
 	{
-		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST')
+		if ($this->_methodIs('POST'))
 		{
 			$this->route($from, $to);
 		}
@@ -104,7 +104,7 @@ class Pigeon
 
 	public function put($from, $to)
 	{
-		if (isset($_SERVER['REQUEST_METHOD']) && ($_SERVER['REQUEST_METHOD'] == 'PUT' || ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_method']) && strtolower($_POST['_method']) == 'put')))
+		if ($this->_methodIs('PUT'))
 		{
 			$this->route($from, $to);
 		}
@@ -112,7 +112,7 @@ class Pigeon
 
 	public function delete($from, $to)
 	{
-		if (isset($_SERVER['REQUEST_METHOD']) && ($_SERVER['REQUEST_METHOD'] == 'DELETE' || ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_method']) && strtolower($_POST['_method']) == 'delete')))
+		if ($this->_methodIs('DELETE'))
 		{
 			$this->route($from, $to);
 		}
@@ -120,7 +120,7 @@ class Pigeon
 
 	public function patch($from, $to)
 	{
-		if (isset($_SERVER['REQUEST_METHOD']) && ($_SERVER['REQUEST_METHOD'] == 'PATCH' || ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_method']) && strtolower($_POST['_method']) == 'patch')))
+		if ($this->_methodIs('PATCH'))
 		{
 			$this->route($from, $to);
 		}
@@ -229,5 +229,14 @@ class Pigeon
 		}
 
 		return $to;
+	}
+
+	protected function _methodIs($method)
+	{
+		return (isset($_SERVER['REQUEST_METHOD']) &&
+					   ($_SERVER['REQUEST_METHOD'] == $method ||
+					   		($_SERVER['REQUEST_METHOD'] == 'POST' &&
+					   		isset($_POST['_method']) &&
+					   		strtolower($_POST['_method']) == strtolower($method))));
 	}
 }
