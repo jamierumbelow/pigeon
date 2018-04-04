@@ -1,5 +1,7 @@
-# Pigeon
+# DEPRECATED: Pigeon
 ### Intelligent, elegant routing for CodeIgniter
+
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 CodeIgniter's routing engine is _far too basic_. Pigeon wraps around the core routing system to provide HTTP method based routing, RESTful resources and nested routes. It uses a natural DSL to make writing cleverer routes simple and elegant.
 
